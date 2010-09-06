@@ -44,6 +44,9 @@ find_people :birthday.exists => 0
 find_people :name => /^b/
 find_people :name => /^b/i
 find_people :height.not => 200
+puts Person.count :height.gt => 210
+Person.all(:height.gt => 210).update :height => 210 + rand(10)
+Person.all(:height.gt => 210).destroy
 
 puts 'UNION'
 puts (Person.all(:height.lt => 160) | Person.all(:height.gt => 210)).map &:attributes

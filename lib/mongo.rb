@@ -5,13 +5,15 @@ class MongodbAdapter < DataMapper::Adapters::AbstractAdapter
   attr_reader :connection, :db
 
   def initialize(name, options)
+    options[:safe_insert] ||= options[:safe] unless false === options[:safe_insert]
+    options[:safe_update] ||= options[:safe] unless false === options[:safe_update]
     super
     establish_connection
   end
 
   def create(resources)
     resources.each do |resource|
-      collection_for(resource.class).insert resource.attributes
+      collection_for(resource.model).insert resource.attributes, :safe => @options[:safe_insert]
     end
   end
 
@@ -23,6 +25,23 @@ class MongodbAdapter < DataMapper::Adapters::AbstractAdapter
       :fields => query.fields.map { |field| field.name },
       :sort   => query.order.map { |direction| [direction.target.name, direction.operator] }
     )
+  end
+
+  def count(query)
+    read(query).count
+  end
+
+  def update(attributes, collection)
+    attributes = attributes.inject({}) do |hash, (property, value)|
+      hash[property.name] = value
+      hash
+    end
+
+    collection_for(collection.model).update collection.query.conditions.to_mongo_hash, attributes, :safe => @options[:safe_update]
+  end
+
+  def delete(collection)
+    collection_for(collection.model).remove collection.query.conditions.to_mongo_hash
   end
 
   private
@@ -49,9 +68,6 @@ class MongodbAdapter < DataMapper::Adapters::AbstractAdapter
 
   def collection_for(model)
     db[model.storage_name]
-  end
-
-  def parse_conditions(query)
   end
 end
 
@@ -260,10 +276,10 @@ module DataMapper
         @@types = {
           'Double' => 1,
           'String' => 2,
-          'Object' => 3
+          'Object' => 3,
           'Array'  => 4,
           'Binary' => 5,
-          'ObjectId' =>  7
+          'ObjectId' => 7,
           'Boolean'  => 8,
           'Date' => 9,
           'Null' => 10,
@@ -273,7 +289,7 @@ module DataMapper
           'ScopedJavaScript' => 15,
           'Integer32' => 16,
           'Time' => 17,
-          'Integer64' => 18
+          'Integer64' => 18,
           'Minkey' => 255,
           'Maxkey' => 127
         }
@@ -314,5 +330,33 @@ module DataMapper
           RUBY
       end
     end
+  end
+end
+
+module DataMapper
+  Model.append_extensions Module.new {
+    def count(query = nil)
+      query = 
+        if query.nil? || (query.kind_of?(Hash) && query.empty?)
+          self.query
+        else
+          scoped_query query
+        end
+      query.repository.count(query)
+    end
+
+    # Query with javascript expressions.
+    # @param [String, Array]
+    def where(query)
+    end
+  }
+
+  Repository.class_eval do
+    include Module.new {
+      def count(query)
+        return 0 unless query.valid?
+        adapter.count query
+      end
+    }
   end
 end
