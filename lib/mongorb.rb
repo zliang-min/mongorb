@@ -1,12 +1,12 @@
-lib_path = File.dirname __FILE__
-$:.unshift File.expand_path(lib_path) unless [lib_path, File.expand_path(lib_path)].any? { |path| $:.include? path }
+# encoding: utf-8
 
-require 'activesupport'
+require 'active_support'
+
+require 'mongorb/dm-mongodb-adapter/adapter'
 
 module Mongorb
   extend ActiveSupport::Autoload
 
+  autoload :Conversion
   autoload :Document
-  autoload :Field
-  autoload :FieldMethods
 end

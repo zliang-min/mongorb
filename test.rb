@@ -1,13 +1,12 @@
-require_relative 'lib/mongo'
+require_relative 'lib/mongorb'
 require 'ffaker'
 
 DataMapper::Logger.new $stdout, :debug
 DataMapper.setup :default, 'mongodb://localhost/test'
 
 class Person
-  include DataMapper::Resource
+  include Mongorb::Document
 
-  property :_id,      BSON::ObjectId
   property :name,     String, :allow_blank => false
   property :birthday, Date
   property :height,   Integer
@@ -54,3 +53,5 @@ puts (Person.all(:height.lt => 160) | Person.all(:height.gt => 210)).map &:attri
 puts "INTERSECTION"
 puts (Person.all(:name => /^Mr\./) & (Person.all(:height.lt => 160) | Person.all(:height.gt => 210))).map &:attributes
 =end
+Person.all(:height.gt => 210).update! :height => 210 + rand(10)
+Person.all(:height.gt => 210).destroy!

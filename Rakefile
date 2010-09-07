@@ -45,7 +45,7 @@ end
 
 task :test => :check_dependencies
 
-#task :default => :test
+task :default => :test
 
 begin
   require 'yard'
@@ -59,5 +59,3 @@ end
 task :t do
   ruby 'test.rb'
 end
-
-task :default => :t
