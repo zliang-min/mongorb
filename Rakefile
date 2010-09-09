@@ -7,7 +7,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "mongorb"
-    gem.summary = %Q{A mongodb Ruby object mapper based on ActiveModel and Arel.}
+    gem.summary = %Q{A mongodb Ruby object mapper based on ActiveModel and DataMapper.}
     gem.description = %Q{TODO: longer description of your gem}
     gem.email = "liang(dot)gimi(at)gmail(dot)com"
     gem.homepage = "http://github.com/Gimi/mongorb"
@@ -16,6 +16,7 @@ begin
     gem.add_dependency 'activesupport', '~> 3'
     gem.add_development_dependency "minitest", ">= 0"
     gem.add_development_dependency "yard", ">= 0"
+    gem.add_development_dependency "forgery", "~> 0.3.4"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

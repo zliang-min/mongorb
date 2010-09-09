@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'helper'
 require 'models'
 require 'active_model/lint'

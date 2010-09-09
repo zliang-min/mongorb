@@ -1,4 +1,3 @@
-require 'forgery'
 require 'models'
 
 $fixtures = []
@@ -7,5 +6,6 @@ $fixtures = []
   $fixtures << {:name => Forgery::Name.full_name, :number => Forgery::Basic.number}
 end
 
-Thing.repository.adapter.send(:connection)[Thing.storage_name].drop
-Thing.create $fixtures
+Thing.repository.adapter.send(:collection_for, Thing).drop
+$fixtures.each { |fixture| Thing.create fixture }
+
