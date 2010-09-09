@@ -14,6 +14,8 @@ begin
     gem.authors = ["梁智敏(Gimi Liang)"]
     gem.add_dependency 'activemodel', '~> 3'
     gem.add_dependency 'activesupport', '~> 3'
+    gem.add_dependency 'dm-core', '~> 1'
+    gem.add_dependency 'mongo', '~> 1.0.8'
     gem.add_development_dependency "minitest", ">= 0"
     gem.add_development_dependency "yard", ">= 0"
     gem.add_development_dependency "forgery", "~> 0.3.4"

@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
      "lib/mongorb/dm-mongodb-adapter/repository.rb",
      "lib/mongorb/document.rb",
      "lib/mongorb/railtie.rb",
+     "mongorb.gemspec",
      "test.rb",
      "test/fixtures.rb",
      "test/helper.rb",
@@ -66,12 +67,16 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activemodel>, ["~> 3"])
       s.add_runtime_dependency(%q<activesupport>, ["~> 3"])
+      s.add_runtime_dependency(%q<dm-core>, ["~> 1"])
+      s.add_runtime_dependency(%q<mongo>, ["~> 1.0.8"])
       s.add_development_dependency(%q<minitest>, [">= 0"])
       s.add_development_dependency(%q<yard>, [">= 0"])
       s.add_development_dependency(%q<forgery>, ["~> 0.3.4"])
     else
       s.add_dependency(%q<activemodel>, ["~> 3"])
       s.add_dependency(%q<activesupport>, ["~> 3"])
+      s.add_dependency(%q<dm-core>, ["~> 1"])
+      s.add_dependency(%q<mongo>, ["~> 1.0.8"])
       s.add_dependency(%q<minitest>, [">= 0"])
       s.add_dependency(%q<yard>, [">= 0"])
       s.add_dependency(%q<forgery>, ["~> 0.3.4"])
@@ -79,6 +84,8 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<activemodel>, ["~> 3"])
     s.add_dependency(%q<activesupport>, ["~> 3"])
+    s.add_dependency(%q<dm-core>, ["~> 1"])
+    s.add_dependency(%q<mongo>, ["~> 1.0.8"])
     s.add_dependency(%q<minitest>, [">= 0"])
     s.add_dependency(%q<yard>, [">= 0"])
     s.add_dependency(%q<forgery>, ["~> 0.3.4"])
